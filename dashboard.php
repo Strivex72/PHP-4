@@ -1,3 +1,20 @@
+<?php
+session_start();
+include_once('./database/env.php');
+
+if(!isset($_SESSION['authenticate'])) {
+    session_unset();
+    header("Location: index.php");
+    exit;
+}
+
+    $query = "SELECT * FROM banners LIMIT 1";
+    $result = mysqli_query($connection, $query);
+    $banner = mysqli_fetch_assoc($result);
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -254,7 +271,7 @@
 
         $("#auth-action").click(function(e) {
             e.preventDefault();
-            // Toggle Logic (Simulated)
+          
             let isOnline = $("#indicator").hasClass("status-online");
             if (isOnline) {
                 $(this).text("Sign In").removeClass("text-danger").addClass("text-primary");
@@ -266,6 +283,12 @@
                 $("#status-label").text("Active").removeClass("text-muted").addClass("text-success");
             }
         });
+    
+$("#auth-action").click(function(e) {
+    if(confirm("Are you sure you want to sign out?")) {
+        window.location.href = "logout.php"; 
+    }
+});
     });
 </script>
 
